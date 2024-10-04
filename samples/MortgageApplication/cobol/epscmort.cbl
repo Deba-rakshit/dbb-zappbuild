@@ -240,7 +240,7 @@
            END-EXEC.
       *
            IF SQLCODE = 100
-               MOVE 'No rows found on SYSDUMM1.' TO MSGERRO
+               MOVE '0 rows found on SYSDUMM1.' TO MSGERRO
            ELSE
                IF SQLCODE NOT = 0
                    MOVE SQLCODE TO SQL-ERROR-CODE
