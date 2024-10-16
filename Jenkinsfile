@@ -36,15 +36,8 @@ pipeline {
                 script {
                     timeout(time: 10, unit: 'MINUTES') {
                         echo 'Starting checkout from Git repository...'
-                        
-                            sh """
-                                cd ${DBB_PROJECT_DIR}
-                                echo "Fetching the repository..."
-                                git fetch --all;
-                                git log -n 5 --oneline;
-                                git checkout ${params.BRANCH_NAME}
-                            """
-                            echo "Successfully fetched."
+                        checkout scm
+                        echo "Successfully fetched."
                     }
                 }
             }
