@@ -50,7 +50,7 @@
           COPY EPSMTCOM.
 
        01  END-OF-TRANS-MSG                 PIC X(30)
-             VALUE 'END OF TRAN -THANK YOU!!!!'.
+             VALUE 'END OF TRAN -BYE!!!!'.
            COPY DFHAID.
       *    COPY DFHEIBLK.
 
