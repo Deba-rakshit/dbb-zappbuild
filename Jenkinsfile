@@ -12,7 +12,7 @@ pipeline {
     }
 
     stages {
-        stage('Prepare SSH Key') {
+        /*stage('Prepare SSH Key') {
             steps {
                 script {
                     // Execute the existing Git SSH management script
@@ -37,7 +37,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
     
                 stage('DBB Build') {
             steps {
