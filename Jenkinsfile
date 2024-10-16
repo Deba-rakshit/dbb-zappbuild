@@ -12,33 +12,6 @@ pipeline {
     }
 
     stages {
-        /*stage('Prepare SSH Key') {
-            steps {
-                script {
-                    // Execute the existing Git SSH management script
-                    echo 'Preparing SSH key for Git...'
-                    withCredentials([usernamePassword(credentialsId: GIT_CREDENTIALS_ID, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                        sh """
-                            /usr/lpp/IBM/dbb/bin/git-jenkins.sh
-                            echo "SSH Key prepared. Listing SSH keys..."
-                        """
-                    }
-                }
-            }
-        }
-
-        stage('Fetch Repo') {
-            steps {
-                script {
-                    timeout(time: 10, unit: 'MINUTES') {
-                        echo 'Starting checkout from Git repository...'
-                        checkout scm
-                        echo "Successfully fetched."
-                    }
-                }
-            }
-        }*/
-    
                 stage('DBB Build') {
             steps {
                 script {
