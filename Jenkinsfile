@@ -10,10 +10,6 @@ pipeline {
         buildDir = '/u/user9/FullBuild/BUILD-OUTPUT'
         buildOutputDir = "${buildDir}/build.*"
     }
-    
-        parameters {
-        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Branch to build') // Capture the branch name
-    }
 
     stages {
         stage('Prepare SSH Key') {
