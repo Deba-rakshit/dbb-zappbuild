@@ -20,6 +20,7 @@ pipeline {
                         // Execute the DBB build command
                         echo "Starting DBB build..."
                         cleanWs()
+                        checkout scm
                         sh """
                         rm -rf /u/user9/FullBuild/BUILD-OUTPUT; mkdir -p /u/user9/FullBuild/BUILD-OUTPUT;git pull --all
                         $DBB_HOME/bin/groovyz /u/user9/devops/dbb-zappbuild/build.groovy  --sourceDir /u/user9/devops/dbb-zappbuild --workDir ${buildDir} --hlq USER9.TRNG --application samples/MortgageApplication --verbose --impactBuild
