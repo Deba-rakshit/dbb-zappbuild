@@ -22,9 +22,7 @@ pipeline {
                         cleanWs()
                         sh 'git fetch --all'
                         sh 'git branch -r'
-                        checkout([$class: 'GitSCM',
-                        userRemoteConfigs: [[url: 'https://github.com/Deba-rakshit/dbb-zappbuild.git', credentialsId: GIT_CREDENTIALS_ID]]
-                        ])
+                        sh 'git clone --depth=1 --branch main https://github.com/Deba-rakshit/dbb-zappbuild.git $DBB_PROJECT_DIR'
                         sh """
                         rm -rf /u/user9/FullBuild/BUILD-OUTPUT; mkdir -p /u/user9/FullBuild/BUILD-OUTPUT;git pull --all
                         $DBB_HOME/bin/groovyz /u/user9/devops/dbb-zappbuild/build.groovy  --sourceDir /u/user9/devops/dbb-zappbuild --workDir ${buildDir} --hlq USER9.TRNG --application samples/MortgageApplication --verbose --impactBuild
