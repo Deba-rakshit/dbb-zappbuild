@@ -20,6 +20,8 @@ pipeline {
                         // Execute the DBB build command
                         echo "Starting DBB build..."
                         cleanWs()
+                        sh 'git fetch --all'
+                        sh 'git branch -r'
                         checkout([$class: 'GitSCM',
                         userRemoteConfigs: [[url: 'https://github.com/Deba-rakshit/dbb-zappbuild.git', credentialsId: GIT_CREDENTIALS_ID]]
                         ])
