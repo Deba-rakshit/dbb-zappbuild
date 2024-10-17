@@ -1,6 +1,5 @@
 pipeline {
-    agent { label 'e2e-pipeline' }
-
+    agent any
     environment {
         GIT_CREDENTIALS_ID = '488de81c-89ef-4c4a-be5a-79ef832e6fa3' // Your Git credentials ID
         SSH_CREDENTIALS_ID = 'zos' // Your SSH credentials ID for deployment
@@ -12,25 +11,51 @@ pipeline {
     }
 
     stages {
-                stage('DBB Build') {
+        stage('Prepare SSH Key') {
             steps {
                 script {
-                    // Change to the DBB project directory
-                    dir(DBB_PROJECT_DIR) {
-                        // Execute the DBB build command
-                        echo "Starting DBB build..."
-                        cleanWs()
-                        sh 'git fetch --all'
-                        sh 'git branch -r'
-                        sh 'git clone --depth=1 --branch main https://github.com/Deba-rakshit/dbb-zappbuild.git $DBB_PROJECT_DIR'
+                    echo 'Preparing SSH key for Git...'
+                    withCredentials([usernamePassword(credentialsId: GIT_CREDENTIALS_ID, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         sh """
-                        rm -rf /u/user9/FullBuild/BUILD-OUTPUT; mkdir -p /u/user9/FullBuild/BUILD-OUTPUT;git pull --all
-                        $DBB_HOME/bin/groovyz /u/user9/devops/dbb-zappbuild/build.groovy  --sourceDir /u/user9/devops/dbb-zappbuild --workDir ${buildDir} --hlq USER9.TRNG --application samples/MortgageApplication --verbose --impactBuild
+                            /usr/lpp/IBM/dbb/bin/git-jenkins.sh
+                            echo "SSH Key prepared. Listing SSH keys..."
                         """
                     }
                 }
             }
         }
+
+        stage('Fetch Repo') {
+            steps {
+                script {
+                    timeout(time: 10, unit: 'MINUTES') {
+                        echo 'Starting checkout from Git repository...'
+                        sh """
+                            cd ${DBB_PROJECT_DIR}
+                            echo "Fetching the repository..."
+                            git fetch --all
+                            git checkout ${params.BRANCH_NAME} || exit 0 // Checkout branch if it exists
+                        """
+                        echo "Successfully fetched."
+                    }
+                }
+            }
+        }
+
+        stage('DBB Build') {
+            steps {
+                script {
+                    dir(DBB_PROJECT_DIR) {
+                        echo "Starting DBB build..."
+                        sh """
+                        rm -rf /u/user9/FullBuild/BUILD-OUTPUT; mkdir -p /u/user9/FullBuild/BUILD-OUTPUT;
+                        git pull --all
+                        $DBB_HOME/bin/groovyz /u/user9/devops/dbb-zappbuild/build.groovy --sourceDir /u/user9/devops/dbb-zappbuild --workDir ${buildDir} --hlq USER9.TRNG --application samples/MortgageApplication --verbose --fullBuild
+                        """
+                    }
+                }
+            }
+        }       
         
         stage('Wazi deploy') {
             steps {
