@@ -15,11 +15,8 @@ pipeline {
         stage('Connect to Mainframe') {
             steps {
                 script {
-            withCredentials([sshUserPrivateKey(credentialsId: SSH_CREDENTIALS_ID, usernameVariable: 'SSH_USER')]) {
-                echo "Connecting to Mainframe Host as user: \$SSH_USER"
-                sh """
-                    ssh -v -p ${MAINFRAME_PORT} -o StrictHostKeyChecking=no \$SSH_USER@${MAINFRAME_HOST} 'echo "SSH connection established." || { echo "Connection failed"; exit 1; }'
-                """
+                        echo "Testing SSH connection without credentials..."
+                        sh "ssh -v -p ${MAINFRAME_PORT} -o StrictHostKeyChecking=no user@${MAINFRAME_HOST} 'echo Test connection'"
             }
                 }
             }
