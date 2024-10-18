@@ -15,8 +15,13 @@ pipeline {
         stage('Connect to Mainframe') {
             steps {
                 script {
-                        echo "Testing SSH connection without credentials..."
-                        sh "ssh -v -p ${MAINFRAME_PORT} -o StrictHostKeyChecking=no user@${MAINFRAME_HOST} 'echo Test connection'"
+                        sshagent(['ssh-user9']) { // Replace with your actual credentials ID
+                        echo "Connecting to Mainframe Host..."
+                        
+                        // Replace 'user' with the actual username if needed
+                        sh """
+                            ssh -p ${MAINFRAME_PORT} -o StrictHostKeyChecking=no user9@${MAINFRAME_HOST} 'echo "SSH connection established."'
+                        """
             }
                 }
             }
