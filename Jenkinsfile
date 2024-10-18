@@ -20,7 +20,6 @@ pipeline {
             }
                 }
             }
-        }
         stage('Prepare SSH Key') {
             steps {
                 script {
