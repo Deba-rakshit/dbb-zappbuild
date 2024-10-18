@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'e2e-pipeline' }
     environment {
         GIT_CREDENTIALS_ID = '488de81c-89ef-4c4a-be5a-79ef832e6fa3' // Your Git credentials ID
         SSH_CREDENTIALS_ID = 'ssh-user9' // Your SSH credentials ID for deployment
