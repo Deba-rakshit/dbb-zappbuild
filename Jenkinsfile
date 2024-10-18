@@ -17,10 +17,11 @@ pipeline {
                 script {
                         sshagent(['ssh-user9']) { // Replace with your actual credentials ID
                         echo "Connecting to Mainframe Host..."
-                        
+                        // Show debug info
+                        sh 'echo "Attempting SSH connection..."'
                         // Replace 'user' with the actual username if needed
                         sh """
-                            ssh -p ${MAINFRAME_PORT} -o StrictHostKeyChecking=no user9@${MAINFRAME_HOST} 'echo "SSH connection established."'
+                            ssh -v -p ${MAINFRAME_PORT} -o StrictHostKeyChecking=no user9@${MAINFRAME_HOST} 'echo "SSH connection established."'
                         """
                         }
             }
