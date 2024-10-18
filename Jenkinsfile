@@ -4,6 +4,7 @@ pipeline {
         GIT_CREDENTIALS_ID = '488de81c-89ef-4c4a-be5a-79ef832e6fa3' // Your Git credentials ID
         SSH_CREDENTIALS_ID = 'ssh-user9' // Your SSH credentials ID for deployment
         MAINFRAME_HOST = '192.86.32.87' // Replace with your server's user and address
+        MAINFRAME_PORT = '65522'
         DBB_PROJECT_DIR = '/u/user9/devops/dbb-zappbuild'
         venvDir = '/global/opt/pyenv/gdp'
         buildDir = '/u/user9/FullBuild/BUILD-OUTPUT'
@@ -14,10 +15,10 @@ pipeline {
         stage('Connect to Mainframe') {
             steps {
                 script {
-                    withCredentials([sshUserPrivateKey(credentialsId: SSH_CREDENTIALS_ID, keyVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: SSH_CREDENTIALS_ID, usernameVariable: 'SSH_USER')]) {
                         echo 'Connecting to Mainframe Host...'
                         sh """
-                            ssh -i \$SSH_KEY \$SSH_USER@${MAINFRAME_HOST} 'echo "SSH connection established."'
+                            ssh -p ${MAINFRAME_PORT} -o StrictHostKeyChecking=no \$SSH_USER@${MAINFRAME_HOST} 'echo "SSH connection established."'
                         """
                     }
                 }
