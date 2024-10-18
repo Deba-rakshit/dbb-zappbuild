@@ -54,7 +54,7 @@
        01 IBMREQD                           PIC X(1).
       *
        01  END-OF-TRANS-MSG                 PIC X(30)
-             VALUE 'END OF TRANSACTION- GOODBYE!!!'.
+             VALUE 'TRAN ended- GOODBYE!!!'.
        01  BLANK-MSG                        PIC X(1) VALUE ' '.
            COPY DFHAID.
       *    COPY DFHEIBLK.
