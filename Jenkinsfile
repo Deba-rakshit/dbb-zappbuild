@@ -15,14 +15,19 @@ pipeline {
         stage('Connect to Mainframe') {
             steps {
                 script {
-                        sshagent(['ssh-user9']) { // Replace with your actual credentials ID
-                        echo "Connecting to Mainframe Host..."
-                        // Show debug info
-                        sh 'echo "Attempting SSH connection..."'
-                        // Replace 'user' with the actual username if needed
-                        sh """
-                            ssh -v -p ${MAINFRAME_PORT} -o StrictHostKeyChecking=no user9@${MAINFRAME_HOST} 'echo "SSH connection established."'
-                        """
+                        sshagent(['ssh-user9']) { 
+                            echo "Using SSH credentials: ssh-user9"
+                            echo "Connecting to Mainframe Host at ${MAINFRAME_HOST}:${MAINFRAME_PORT}..."
+                            
+                            // Attempt SSH connection with verbose logging
+                            try {
+                                sh """
+                                    ssh -v -p ${MAINFRAME_PORT} -o StrictHostKeyChecking=no user@${MAINFRAME_HOST} 'echo "SSH connection established."'
+                                """
+                            } catch (Exception e) {
+                                echo "SSH connection failed: ${e}"
+                                error("Exiting due to SSH connection failure.")
+                            }
                         }
             }
                 }
