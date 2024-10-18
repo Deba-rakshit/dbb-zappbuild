@@ -22,6 +22,7 @@ pipeline {
                         sh """
                             ssh -p ${MAINFRAME_PORT} -o StrictHostKeyChecking=no user9@${MAINFRAME_HOST} 'echo "SSH connection established."'
                         """
+                        }
             }
                 }
             }
