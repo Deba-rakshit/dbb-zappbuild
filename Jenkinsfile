@@ -15,7 +15,7 @@ pipeline {
         stage('Connect to Mainframe') {
             steps {
                 script {
-                        sshagent(['ssh-user9']) { 
+                        sshagent(credentials: ['ssh-user9']) { 
                             echo "Using SSH credentials: ssh-user9"
                             echo "Connecting to Mainframe Host at ${MAINFRAME_HOST}:${MAINFRAME_PORT}..."
                             
